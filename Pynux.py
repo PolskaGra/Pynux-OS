@@ -1,5 +1,4 @@
 import os
-from termcolor import colored
 import getpass
 import time
 import sys
@@ -18,7 +17,7 @@ def Loadnig():
  | |  | |  '  `-' |   | |  | |   | |  | |   ' .  ; .    | |  | | (   ). '.   
  | |  ' |   `.__. |   | |  | |   | |  ; '   | |  | |    | '  | |  | |  `\ |  
  | `-'  '   ___ | |   | |  | |   ' `-'  /   | |  | |    '  `-' /  ; '._,' '  
- | \__.'   (   )' |  (___)(___)   '.__.'   (___)(___)    `.__.'    '.___.'   V.1.2.1
+ | \__.'   (   )' |  (___)(___)   '.__.'   (___)(___)    `.__.'    '.___.'   V.1.2.2
  | |        ; `-' '                                                          
 (___)        .__.'                                                           
 '''
@@ -157,9 +156,9 @@ $ '''
             if czy_istnieje == True:
                 Default_Dir = Full_Path
             else:
-                print("DIR %s DOESN'T EXIST" % Full_Path)
-            #else:
-            #print("DIR %s11111111111111 DOESN'T EXIST" % PATH)
+                print("DIR DOESN'T EXIST")
+        else:
+            print("DIR DOESN'T EXIST")
             
     elif Cmd.startswith("open "):
         File_Name = Cmd.replace('open ', '', 1)
@@ -287,13 +286,13 @@ $ '''
         
     elif Cmd.startswith("mvdir "):
         DirAndDir = Cmd.replace('mvdir ', '', 1)
-        Dir_and_Dir = Command_For_MvDir.split(", ")
+        Dir_and_Dir = DirAndDir.split(", ")
         DirToMove = Dir_and_Dir[0]
         WhereMoveDir = Dir_and_Dir[1]
-        Old_Dir_Path = Default_Dir + "\\" + Dir
-        Dir_Check()            
+        Old_Dir_Path = Default_Dir + "\\" + DirToMove
+        Dir_Check(Old_Dir_Path)            
         if first == True:
-            New_Dir_Path = Command + Dir
+            New_Dir_Path = WhereMoveDir + DirToMove
             try:
                 shutil.copytree(Old_Dir_Path, New_Dir_Path)
                 shutil.rmtree(Old_Dir_Path)
@@ -319,9 +318,10 @@ $ '''
      
     elif Cmd.startswith("python "):
         File_Name = Cmd.replace('python ', '', 1)
-        File_Dir = Default_Dir + File_Name
+        File_Dir = Default_Dir + "\\" + File_Name
         try:
-            os.system(play_py_file)
+            print(" ")
+            os.system(File_Dir)
         except OSError:
             print("PLAYING FILE FAILED")
     
@@ -456,6 +456,11 @@ $ '''
 
     elif Cmd == "cls":
         os.system('cls')
-            
+
+    elif Cmd == "ddtufs":
+        drives = [ chr(x) + ":" for x in range(65,91) if os.path.exists(chr(x) + ":\\") ]
+        for drives in drives:
+            total, used, free = shutil.disk_usage(drives)
+            print(drives + "\\    Total: " + str((total // (2**30))) + " GiB    Used: " + str((used // (2**30))) + " GiB    Free: " + str((free // (2**30))) + " GiB")       
     else:
-        print("THERE IS NO SUCH COMMAND LIKE",'"'+Cmd+'"')
+        print("THERE IS NO SUCH COMMAND LIKE",'"'+Cmd+'"')          
