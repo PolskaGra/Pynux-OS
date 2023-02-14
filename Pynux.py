@@ -17,7 +17,7 @@ def Loadnig():
  | |  | |  '  `-' |   | |  | |   | |  | |   ' .  ; .    | |  | | (   ). '.   
  | |  ' |   `.__. |   | |  | |   | |  ; '   | |  | |    | '  | |  | |  `\ |  
  | `-'  '   ___ | |   | |  | |   ' `-'  /   | |  | |    '  `-' /  ; '._,' '  
- | \__.'   (   )' |  (___)(___)   '.__.'   (___)(___)    `.__.'    '.___.'   V.1.2.2
+ | \__.'   (   )' |  (___)(___)   '.__.'   (___)(___)    `.__.'    '.___.'   V.1.2.3
  | |        ; `-' '                                                          
 (___)        .__.'                                                           
 '''
@@ -454,13 +454,27 @@ $ '''
         else:
             print ("SUCCESSFULLY CREATED THE DIRECTORY %s" % Path)
 
-    elif Cmd == "cls":
+    elif Cmd.startswith("cls"):
         os.system('cls')
 
-    elif Cmd == "ddtufs":
+    elif Cmd.startswith("ddtufs"):
         drives = [ chr(x) + ":" for x in range(65,91) if os.path.exists(chr(x) + ":\\") ]
         for drives in drives:
             total, used, free = shutil.disk_usage(drives)
-            print(drives + "\\    Total: " + str((total // (2**30))) + " GiB    Used: " + str((used // (2**30))) + " GiB    Free: " + str((free // (2**30))) + " GiB")       
+            print(drives + "\\    Total: " + str((total // (2**30))) + " GiB    Used: " + str((used // (2**30))) + " GiB    Free: " + str((free // (2**30))) + " GiB")
+
+    elif Cmd.startswith("print"):
+        what_to_print = Cmd.replace("print ", "", 1)
+        userandsysenv = os.environ
+        uase = ["$" + userandsysenv for userandsysenv in userandsysenv]
+        what_print = what_to_print.replace("$", "", 1)
+        if what_print.startswith('str<'):
+            printfs = what_print.replace('str<', '', 1)
+            printf_len = len(printfs)
+            print(printfs)
+        else:
+            what = os.getenv(what_print)
+            print(what)
+                                  
     else:
         print("THERE IS NO SUCH COMMAND LIKE",'"'+Cmd+'"')          
