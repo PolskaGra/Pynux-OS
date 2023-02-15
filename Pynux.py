@@ -27,10 +27,11 @@ def Loadnig():
     
 Loadnig()                      
 
+Current_Dir = os.getcwd()
 HostName = platform.node()
 Username = getpass.getuser()
 HostUserName = str(Username) + "@" + str(HostName)
-Default_Dir = "C:\\Users\\" + str(Username)
+Default_Dir = Current_Dir
 
 while True:
     first = False
