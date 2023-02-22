@@ -1,0 +1,1 @@
+Proszę wypakować folder Python3.x aby korzystać z opcji python jak i z samego programu
