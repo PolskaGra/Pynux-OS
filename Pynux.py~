@@ -9,19 +9,18 @@ os.system('cls')
 
 def Loadnig():
     Loading = '''
-\033[1;37;40m   .-..    ___  ___   ___ .-.    ___  ___   ___  ___   
-  /    \  (   )(   ) (   )   \  (   )(   ) (   )(   ) 
- ' .-,  ;  | |  | |   |  .-. .   | |  | |   | |  | |  
- | |  . |  | |  | |   | |  | |   | |  | |    \ `' /   
- | |  | |  | '  | |   | |  | |   | |  | |    / ,. \    
- | |  | |  '  `-' |   | |  | |   | |  | |   ' .  ; .   
- | |  ' |   `.__. |   | |  | |   | |  ; '   | |  | |   
- | `-'  '   ___ | |   | |  | |   ' `-'  /   | |  | |   
- | \__.'   (   )' |  (___)(___)   '.__.'   (___)(___)  V.1.3.0
+   .-..    ___  ___   ___ .-.    ___  ___   ___  ___      .--.       .--.    
+  /    \  (   )(   ) (   )   \  (   )(   ) (   )(   )    /    \    /  _  \   
+ ' .-,  ;  | |  | |   |  .-. .   | |  | |   | |  | |    |  .-. ;  . .' `. ;  
+ | |  . |  | |  | |   | |  | |   | |  | |    \ `' /     | |  | |  | '   | |  
+ | |  | |  | '  | |   | |  | |   | |  | |    / ,. \     | |  | |  _\_`.(___) 
+ | |  | |  '  `-' |   | |  | |   | |  | |   ' .  ; .    | |  | | (   ). '.   
+ | |  ' |   `.__. |   | |  | |   | |  ; '   | |  | |    | '  | |  | |  `\ |  
+ | `-'  '   ___ | |   | |  | |   ' `-'  /   | |  | |    '  `-' /  ; '._,' '  
+ | \__.'   (   )' |  (___)(___)   '.__.'   (___)(___)    `.__.'    '.___.'   V.1.3.0
  | |        ; `-' '                                                          
-(___)        .__.' \033[m                                                           
+(___)        .__.'                                                           
 '''
-
     print(Loading)
     print('CREATED BY PACZEK')
     print("COMMAND LIST = HELP")
@@ -340,9 +339,9 @@ $ '''
             print("PLAYING FILE FAILED")
             
     elif Cmd.startswith("vim"):
-        VimCommand = Cmd.replace('vim ', '', 1)
+        VimCommand = Cmd.replace('vim', '', 1)
         try:
-            os.system('cmd /c ' + Current_Dir + "\\Vim\\" + "vim.exe " + Default_Dir + "\\" + VimCommand)
+            os.system('cmd /c ' + Current_Dir + "\\Vim\\" + "vim.exe" + VimCommand)
         except OSError:
             print("PLAYING FILE FAILED")
 
@@ -357,7 +356,7 @@ $ '''
     elif Cmd.startswith("tcc "):
         TccCommand = Cmd.replace('tcc', '', 1)
         try:
-            os.system('cmd /c ' + Current_Dir + "\\tcc\\" + "tcc.exe" + Default_Dir + "\\" + TccCommand)
+            os.system('cmd /c ' + Current_Dir + "\\tcc\\" + "tcc.exe" + TccCommand)
         except OSError:
             print("PLAYING FILE FAILED")
             
