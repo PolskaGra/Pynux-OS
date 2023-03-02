@@ -9,7 +9,7 @@ os.system('cls')
 
 def Loadnig():
     Loading = '''
-\033[1;37;40m   .-..    ___  ___   ___ .-.    ___  ___   ___  ___   
+   .-..    ___  ___   ___ .-.    ___  ___   ___  ___   
   /    \  (   )(   ) (   )   \  (   )(   ) (   )(   ) 
  ' .-,  ;  | |  | |   |  .-. .   | |  | |   | |  | |  
  | |  . |  | |  | |   | |  | |   | |  | |    \ `' /   
@@ -19,8 +19,7 @@ def Loadnig():
  | `-'  '   ___ | |   | |  | |   ' `-'  /   | |  | |   
  | \__.'   (   )' |  (___)(___)   '.__.'   (___)(___)  V.1.3.0
  | |        ; `-' '                                                          
-(___)        .__.' \033[m                                                           
-'''
+(___)        .__.'                                                            '''
 
     print(Loading)
     print('CREATED BY PACZEK')
@@ -28,13 +27,14 @@ def Loadnig():
     
 Loadnig()                      
 
-Current_Dir = os.getcwd()
+Current_Dir = os.path.normpath(os.path.abspath(__file__) + os.sep + os.pardir)
 HostName = platform.node()
 Username = getpass.getuser()
-HostUserName = str(Username) + "@" + str(HostName)
+HostUserName = str(Username) + "~" + str(HostName)
 Default_Dir = Current_Dir
 
 while True:
+    Default_List = os.listdir(Default_Dir)
     first = False
     def Dir_Check(Command):
         global first
@@ -142,7 +142,7 @@ while True:
             first = False
             
     Default_Cmd = HostUserName + " " + Default_Dir + '''
-$ ''' 
+# ''' 
     print(" ")
     Cmd = input(Default_Cmd)
     if Cmd.startswith("cd "):
@@ -150,16 +150,19 @@ $ '''
         Dir_Check(PATH)
         czy_istnieje = os.path.exists(PATH)
 
-        if PATH == "..":
+        if PATH.startswith(".."):
             peth = os.path.normpath(Default_Dir + os.sep + os.pardir)
             puth = os.path.normpath(peth)
             Default_Dir = puth
 
-        elif PATH == ".":
+        elif PATH == "~":
             def_Dir = os.path.expanduser( '~' )
             puth = os.path.normpath(def_Dir)
             Default_Dir = puth
-        
+
+        elif PATH == ".":
+            print()
+            
         else:
             if first == True and czy_istnieje == True:
                 puth = os.path.normpath(PATH)
@@ -177,19 +180,46 @@ $ '''
             
     elif Cmd.startswith("open "):
         File_Name = Cmd.replace('open ', '', 1)
-        try:
-            f = open(Default_Dir + "\\" + File_Name, "r", encoding="utf8")
-            print(f.read())
-        except OSError:
-            print("OPENING FILE %s FAILED" % File_Name)
+        Dir_Check(File_Name)
+        czy_istnieje = os.path.exists(File_Name)
+        if first == True and czy_istnieje == True:
+            try:
+                Plik = str(File_Name)
+                ilebajtowwazyplik = os.path.getsize(Plik)
+                Data_stworzenia1 = os.path.getctime(File_Name)
+                Data_stworzenia2 = time.ctime(Data_stworzenia1)
+                ilepotrzebaplik = str(ilebajtowwazyplik // 1024)
+                printf = f"--{File_Name}----{ilepotrzebaplik}-kb----{Data_stworzenia2}--"
+                pritf = printf.replace(" ", "-")
+                print(pritf)
+                print("")
+                f = open(Plik, "r", encoding="utf8")
+                print(f.read())
+            except OSError:
+                print("OPENING FILE %s FAILED" % File_Name)            
+
+        else:
+            try:
+                Plik = str(Default_Dir) + "\\" + str(File_Name)
+                ilebajtowwazyplik = os.path.getsize(Plik)
+                Data_stworzenia1 = os.path.getctime(Default_Dir + "\\" + File_Name)
+                Data_stworzenia2 = time.ctime(Data_stworzenia1)
+                ilepotrzebaplik = str(ilebajtowwazyplik // 1024)
+                printlen = len(f"{File_Name} || {ilepotrzebaplik} kb || {Data_stworzenia2}")
+                print(f"{printlen}")
+                print(f"{Default_Dir}\\{File_Name} || {ilepotrzebaplik} kb || {Data_stworzenia2}")
+                f = open(Plik, "r", encoding="utf8")
+                print(f.read())
+            except OSError:
+                print("OPENING FILE %s FAILED" % File_Name)
             
     elif Cmd.startswith("cpfile "):
         FileAndDir = Cmd.replace('cpfile ', '', 1)
         File_and_Dir = FileAndDir.split(", ")
         File = File_and_Dir[0]
         Dir = File_and_Dir[1]
+        Dir_Check(Dir)
         Old_Copy_File_Path = Default_Dir + "\\" + File
-        Dir_Check(Dir)            
         if first == True:
             New_Copy_File_Path = Dir + "\\" + File
             try:
@@ -331,36 +361,21 @@ $ '''
             else:
                 print("DIR %s DOESN'T EXIST" % dla_czy_istnieje) 
      
-    elif Cmd.startswith("run "):
-        File_Name = Cmd.replace('run ', '', 1)
-        File_Dir = Default_Dir + "\\" + File_Name
+    elif Cmd in Default_List:
+        print(Cmd)
+        os.system('cmd /c ' + Cmd)
+                
+    elif Cmd.startswith("micro"):
+        VimCommand = Cmd.replace('micro ', '', 1)
         try:
-            os.system(File_Dir)
-        except OSError:
-            print("PLAYING FILE FAILED")
-            
-    elif Cmd.startswith("vim"):
-        VimCommand = Cmd.replace('vim ', '', 1)
-        try:
-            os.system('cmd /c ' + Current_Dir + "\\Vim\\" + "vim.exe " + Default_Dir + "\\" + VimCommand)
+            os.system('cmd /c ' + Current_Dir + "\\micro\\" + "micro.exe " + Default_Dir + "\\" + VimCommand)
         except OSError:
             print("PLAYING FILE FAILED")
 
-    elif Cmd.startswith("python"):
-        PyCommand = Cmd.replace('python', '', 1)
-        try:
-            os.system('cmd /c ' + Current_Dir + "\\Python\\" + "py.exe" + PyCommand)
-        except OSError:
-            print("PLAYING FILE FAILED")
-
-
-    elif Cmd.startswith("tcc "):
-        TccCommand = Cmd.replace('tcc', '', 1)
-        try:
-            os.system('cmd /c ' + Current_Dir + "\\tcc\\" + "tcc.exe" + Default_Dir + "\\" + TccCommand)
-        except OSError:
-            print("PLAYING FILE FAILED")
-            
+    elif Cmd.startswith("cmd"):
+        VimCommand = Cmd.replace('cmd ', '', 1)
+        os.system('cmd /c ' + VimCommand)
+        
     elif Cmd == "LD" or Cmd == "Ld" or Cmd == "ld": 
         dir_list = os.listdir(Default_Dir)
         print(".")
@@ -368,89 +383,16 @@ $ '''
         for dir_list in dir_list:
             print(dir_list)
             
-    elif Cmd.startswith("mkfile "):
-        File_Name = Cmd.replace("mkfile ", "", 1)
+    elif Cmd.startswith("touch "):
+        File_Name = Cmd.replace("touch ", "", 1)
         Path = Default_Dir + "\\" + File_Name
         
         try:
             with open(Path, 'w', encoding='utf-8') as f:
-                line1 = input("1:  ")
-                line2 = input("2:  ")
-                line3 = input("3:  ")
-                line4 = input("4:  ")
-                line5 = input("5:  ")
-                line6 = input("6:  ")
-                line7 = input("7:  ")
-                line8 = input("8:  ")
-                line9 = input("9:  ")
-                line10 = input("10: ")
-                line11 = input("11: ")
-                line12 = input("12: ")
-                line13 = input("13: ")
-                line14 = input("14: ")
-                line15 = input("15: ")
-                line16 = input("16: ")
-                line17 = input("17: ")
-                line18 = input("18: ")
-                line19 = input("19: ")
-                line20 = input("20: ")
-                line21 = input("21: ")
-                line22 = input("22: ")
-                line23 = input("23: ")
-                line24 = input("24: ")
-                line25 = input("25: ")
-                f.write(line1)
                 f.write("\n")
-                f.write(line2)
-                f.write("\n")
-                f.write(line3)
-                f.write("\n")
-                f.write(line4)
-                f.write("\n")
-                f.write(line5)
-                f.write("\n")
-                f.write(line6)
-                f.write("\n")
-                f.write(line7)
-                f.write("\n")
-                f.write(line8)
-                f.write("\n")
-                f.write(line9)
-                f.write("\n")
-                f.write(line10)
-                f.write("\n")
-                f.write(line11)
-                f.write("\n")
-                f.write(line12)
-                f.write("\n")
-                f.write(line13)
-                f.write("\n")
-                f.write(line14)
-                f.write("\n")
-                f.write(line15)
-                f.write("\n")
-                f.write(line16)
-                f.write("\n")
-                f.write(line17)
-                f.write("\n")
-                f.write(line18)
-                f.write("\n")
-                f.write(line19)
-                f.write("\n")
-                f.write(line20)
-                f.write("\n")
-                f.write(line21)
-                f.write("\n")
-                f.write(line22)
-                f.write("\n")
-                f.write(line23)
-                f.write("\n")
-                f.write(line24)
-                f.write("\n")
-                f.write(line25)
 
         except FileNotFoundError:
-            print ("CREATION OF THE DIRECTORY %s FAILED" % Command)
+            print ("CREATION OF THE FILE %s FAILED" % Command)
         else:
             print(" ")
             
@@ -483,21 +425,37 @@ $ '''
         
     elif Cmd.startswith("mkdir "):
         Dir_Name = Cmd.replace("mkdir ", "", 1)
-        Path = Default_Dir + "\\" + Dir_Name
-        try:
-            os.makedirs(Path)
-        except OSError:
-            print ("CREATION OF THE DIRECTORY %s FAILED" % Path)
-        else:
-            print ("SUCCESSFULLY CREATED THE DIRECTORY %s" % Path)
+        Dir_Check(Dir_Name)
+        czy_istnieje = os.path.exists(Dir_Name)
+        print(Dir_Check(Dir_Name))
+        print(czy_istnieje)
+        if Dir_Check == None and czy_istnieje == False:
+            Path = Default_Dir + "\\" + Dir_Name
+            try:
+                os.makedirs(Path)
+            except OSError:
+                print("CREATION OF THE DIRECTORY %s FAILED" % Path)
+            else:
+                print("SUCCESSFULLY CREATED THE DIRECTORY %s" % Path)
+        elif Dir_Check == True and czy_istnieje == False:
+            try:
+                os.makedirs(Path)
+            except OSError:
+                print("CREATION OF THE DIRECTORY %s FAILED" % Path)
+            else:
+                print("SUCCESSFULLY CREATED THE DIRECTORY %s" % Path)
 
     elif Cmd.startswith("cls"):
         os.system('cls')
 
+    elif Cmd.startswith("clear"):
+        os.system('cls')
+
     elif Cmd.startswith("ddtufs"):
-        drives = [ chr(x) + ":" for x in range(65,91) if os.path.exists(chr(x) + ":\\") ]
+        drives = [ chr(x) + ":" for x in range(65,91) if os.path.exists(chr(x) + ":") ]
         for drives in drives:
             total, used, free = shutil.disk_usage(drives)
+            driv = drives + "\\"
             print(drives + "\\    Total: " + str((total // (2**30))) + " GiB    Used: " + str((used // (2**30))) + " GiB    Free: " + str((free // (2**30))) + " GiB")
 
     elif Cmd.startswith("print"):
@@ -509,9 +467,11 @@ $ '''
             printfs = what_print.replace('str<', '', 1)
             printf_len = len(printfs)
             print(printfs)
-        else:
+        elif what_print.startswith('$'):
             what = os.getenv(what_print)
             print(what)
+        else:
+            print(what_to_print)
                                   
     else:
         print("THERE IS NO SUCH COMMAND LIKE",'"'+Cmd+'"')          
