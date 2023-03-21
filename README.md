@@ -1,4 +1,4 @@
-# Pynux OS
+# Pynux OS - Terminal in Python
 What i added in version 1.3.4
  - Tted (Tomasz text editor)
 
