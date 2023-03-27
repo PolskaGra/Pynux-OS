@@ -8,18 +8,20 @@ import Dir
 from var import xlsfilename, xlsfilenameorg, Current_Dir, Default_Dir
 import xlsxwriter
 import openpyxl
+from googlesearch import search
+
 #----------------------------------------------------------------------------------------
 # Co Dodac:
-# - 
-# - gry
-# ~ Tord (word w terminalu) / Theet (excel w terminalu) / Toint (Moze power point w terminalu)
+# ~ gry
+# = Tord (word w terminalu) / Theet (excel w terminalu) / Toint (Moze power point w terminalu)
 # - Script programming lang (Pyx)
 # - graphics in terminal for pyx
 # - paczki xd
 # - przekdladanit stron html xddddddd
 # - Mozliwosc wysylania emaily xddddddddddddddddddd
-# - Gzip i Tar 
-# - Uzytkownicy i hasla (Dla usuwania plikow admina)
+# = Gzip i Tar 
+# - hasla (Dla usuwania plikow admina)
+# - multiple files operations
 #-----------------------------------------------------------------------------------------
 
 os.system('cls')
@@ -65,7 +67,7 @@ while True:
 
     Cmd = input(f"\n{HostUserName} {Default_Dir_print} \n# ")        
     if Cmd.startswith("cd"):
-        PATH = Cmd.replace("cd", "", 1) 
+        PATH = Cmd.replace("cd ", "", 1) 
         Dir.Dir_Check(PATH)
         czy_istnieje = os.path.exists(PATH)
 
@@ -320,8 +322,9 @@ while True:
     elif Cmd == "EXIT" or Cmd == "Exit" or Cmd == "exit":
         exit()
             
-    elif Cmd == 'Math' or Cmd == 'MATH' or Cmd == 'math':
-        print(eval(input()))
+    elif Cmd.startswith('math'):
+        question = Cmd.replace('math ', '', 1)
+        print(eval(question))
        
     elif Cmd.startswith('delfile'):
         File_Name = Cmd.replace("delfile ", "", 1)
@@ -378,6 +381,14 @@ while True:
             driv = drives + "\\"
             print(drives + "\\    Total: " + str((total // (2**30))) + " GiB    Used: " + str((used // (2**30))) + " GiB    Free: " + str((free // (2**30))) + " GiB")
 
+#Damy Rade
+            
+    elif Cmd.startswith("search"):
+        query = Cmd.replace("search ", "",1)
+        print()
+        for j in search(query, tld="co.in", num=10, stop=10, pause=2):
+            print(j)
+        
     elif Cmd.startswith("tted"):
         Ttked = Cmd.replace("tted", "", 1)
         Ted = Ttked.replace(" ","",1)

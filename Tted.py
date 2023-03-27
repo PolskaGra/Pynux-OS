@@ -2,12 +2,10 @@
 # check his youtube chanel
 
 import curses, sys
-import os
 os.system('cls')
-os.system("pip install windows-curses")
 def main(stdscr):
   s = curses.initscr(); s.nodelay(1); curses.noecho(); curses.raw(); s.keypad(1)
-  b = []; src = 'noname.txt'; R, C = s.getmaxyx(); x, y, r, c = [0] * 4
+  b = []; src = 'Untiled.txt'; R, C = s.getmaxyx(); x, y, r, c = [0] * 4
   if len(sys.argv) == 2: src = sys.argv[1]
   try:
     with open(sys.argv[1]) as f:
